@@ -336,20 +336,4 @@ The suite spins up an isolated app with a temporary database and exercises the f
 API — health, upload + validation errors, analysis, statistics, insights, chart data, reports,
 and AI endpoints (with a mocked OpenAI client so no network or API key is required).
 
-## Troubleshooting
 
-| Problem | Fix |
-|---|---|
-| `port is already in use` | Change `PORT` in `.env`, or kill the process using port 8000. |
-| No AI features appear | Open AI Insights or AI Chat, select **Connect AI**, and save your OpenAI API key for this session. |
-| `401` on AI test | The OpenAI API key is invalid or expired — create a replacement at platform.openai.com/api-keys. |
-| `429` on AI test | OpenAI rate limit or quota reached — check your OpenAI account and retry later. |
-| CSV upload rejected | Ensure the file is `.csv`/`.tsv`/`.txt`, non-empty, under 25 MB, and well-formed. |
-| `MISSING_API_KEY` | AI endpoints require the `X-AI-API-Key` header; the UI sends it automatically once a key is saved. |
-| PDF has odd characters | Non-Latin-1 glyphs are replaced in the PDF export for font compatibility. |
-| Frontend can't reach a remote backend | Set `window.APP_CONFIG.API_BASE_URL` and enable CORS for your frontend origin on the backend. |
-| WAL database files (`app.db-wal`, `app.db-shm`) | Normal SQLite WAL artifacts; safe to keep. |
-
-## License
-
-[MIT](./LICENSE)
