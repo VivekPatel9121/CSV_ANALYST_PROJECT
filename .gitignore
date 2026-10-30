@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Environment & secrets
+.env
+
+# Runtime data (SQLite + uploaded files)
+data/
+uploads/
+
+# Test & tooling
+.pytest_cache/
+.coverage
+htmlcov/
+node_modules/
+
+# Logs
+*.log
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="AI CSV Analyzer — turn your CSV data into insights, visualizations, and decisions." />
+  <title>AI CSV Analyzer — Data Insights, Visualizations & AI Analysis</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d4a900'/%3E%3Cpath d='M8 22l5-6 4 3 7-9' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static/assets/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/assets/vendor/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
+  <link rel="stylesheet" href="/static/css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ============================================================ -->
+  <!-- TOP NAVIGATION -->
+  <!-- ============================================================ -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <button class="btn btn-icon d-lg-none hamburger" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-drawer">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <a href="#/" class="brand" aria-label="AI CSV Analyzer home">
+        <span class="brand-mark"><i class="bi bi-graph-up-arrow"></i></span>
+        <span class="brand-text">AI CSV <strong>Analyzer</strong></span>
+      </a>
+
+      <!-- Desktop nav links (hidden on mobile) -->
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a class="desktop-nav-item" href="#/"><i class="bi bi-house"></i> Home</a>
+        <a class="desktop-nav-item" href="#upload-panel" data-scroll><i class="bi bi-upload"></i> Analyze CSV</a>
+        <a class="desktop-nav-item" href="#features" data-scroll><i class="bi bi-grid-1x2"></i> Features</a>
+        <a class="desktop-nav-item" href="#how-it-works" data-scroll><i class="bi bi-lightning-charge"></i> How it Works</a>
+      </nav>
+
+      <div class="topbar-center" id="dataset-chip-wrap" hidden>
+        <button class="btn btn-dataset" id="dataset-chip" aria-label="Switch dataset">
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+          <span id="dataset-chip-name">—</span>
+          <i class="bi bi-chevron-down small ms-1"></i>
+        </button>
+      </div>
+
+      <div class="topbar-right">
+        <button type="button" class="badge ai-badge" id="ai-connect-btn" title="Configure AI connection" aria-label="Configure AI connection">
+          <span class="ai-dot"></span>
+          <span id="ai-status-text">AI not configured</span>
+        </button>
+        <button class="btn btn-icon" id="theme-toggle" aria-label="Toggle dark / light mode">
+          <i class="bi bi-moon-stars" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile drawer (visible only below lg breakpoint) -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <a href="#/" class="brand" aria-label="AI CSV Analyzer home">
+        <span class="brand-mark"><i class="bi bi-graph-up-arrow"></i></span>
+        <span class="brand-text">AI CSV <strong>Analyzer</strong></span>
+      </a>
+      <button class="btn btn-icon hamburger hamburger-x" id="drawer-close" aria-label="Close menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+    <nav class="mobile-drawer-nav" id="mobile-drawer-landing" aria-label="Landing navigation">
+      <a class="mobile-nav-item" href="#/"><i class="bi bi-house"></i>Home</a>
+      <a class="mobile-nav-item" href="#upload-panel" data-scroll><i class="bi bi-upload"></i>Analyze CSV</a>
+      <a class="mobile-nav-item" href="#features" data-scroll><i class="bi bi-grid-1x2"></i>Features</a>
+      <a class="mobile-nav-item" href="#how-it-works" data-scroll><i class="bi bi-lightning-charge"></i>How it works</a>
+    </nav>
+    <nav class="mobile-drawer-nav" id="mobile-drawer-dashboard" aria-label="Dashboard navigation" hidden>
+      <a class="mobile-nav-item active" data-section="overview" href="#dashboard/overview"><i class="bi bi-grid-1x2"></i><span>Overview</span></a>
+      <a class="mobile-nav-item" data-section="preview" href="#dashboard/preview"><i class="bi bi-table"></i><span>Data Preview</span></a>
+      <a class="mobile-nav-item" data-section="quality" href="#dashboard/quality"><i class="bi bi-shield-check"></i><span>Data Quality</span></a>
+      <a class="mobile-nav-item" data-section="statistics" href="#dashboard/statistics"><i class="bi bi-calculator"></i><span>Statistics</span></a>
+      <a class="mobile-nav-item" data-section="visualizations" href="#dashboard/visualizations"><i class="bi bi-bar-chart"></i><span>Visualizations</span></a>
+      <a class="mobile-nav-item" data-section="ai-insights" href="#dashboard/ai-insights"><i class="bi bi-stars"></i><span>AI Insights</span></a>
+      <a class="mobile-nav-item" data-section="chat" href="#dashboard/chat"><i class="bi bi-chat-dots"></i><span>AI Chat</span></a>
+      <a class="mobile-nav-item" data-section="reports" href="#dashboard/reports"><i class="bi bi-file-earmark-arrow-down"></i><span>Reports</span></a>
+    </nav>
+    <div class="mobile-drawer-footer">
+      <button class="btn btn-sm btn-outline-secondary w-100" id="drawer-new-upload">
+        <i class="bi bi-upload me-1"></i>Upload new CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LANDING VIEW -->
+  <!-- ============================================================ -->
+  <main id="main-content">
+    <section id="view-landing" class="view active">
+      <div class="landing-hero">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <span class="eyebrow"><i class="bi bi-stars"></i> AI-Powered Data Analysis</span>
+              <h1 class="hero-title">Turn your CSV data into <span class="gradient-text shimmer">insights</span>, <span class="gradient-text shimmer">visualizations</span>, and <span class="gradient-text shimmer">decisions</span>.</h1>
+              <p class="hero-subtitle">
+                Upload a CSV file and instantly get statistics, data-quality scores, interactive charts,
+                rule-based insights, and a chat with your own AI data analyst — powered by your OpenAI API key.
+              </p>
+              <div class="hero-actions">
+                <button class="btn btn-primary btn-lg" id="landing-upload-btn">
+                  <i class="bi bi-upload me-2"></i>Upload CSV
+                </button>
+                <button class="btn btn-outline-light btn-lg" id="landing-demo-btn">
+                  <i class="bi bi-magic me-2"></i>Try the Demo Dataset
+                </button>
+              </div>
+              <div class="hero-meta">
+                <span><i class="bi bi-shield-check"></i> CSV data stays on your server</span>
+                <span><i class="bi bi-phone"></i> Works on any device</span>
+                <span><i class="bi bi-lightning-charge"></i> Instant results</span>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="visual-card visual-card-a">
+                <div class="vc-head"><span class="vc-dot" style="background:#d4a900"></span> Revenue Trend</div>
+                <svg viewBox="0 0 220 90" class="mini-line">
+                  <path d="M10,70 L45,58 L80,64 L115,38 L150,44 L185,18 L210,26" fill="none" stroke="#d4a900" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M10,70 L45,58 L80,64 L115,38 L150,44 L185,18 L210,26 L210,90 L10,90 Z" fill="url(#lg)" opacity=".35"/>
+                  <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4a900"/><stop offset="1" stop-color="#d4a900" stop-opacity="0"/></linearGradient></defs>
+                </svg>
+              </div>
+              <div class="visual-card visual-card-b">
+                <div class="vc-head"><span class="vc-dot" style="background:#10b981"></span> Health Score</div>
+                <div class="ring" style="--p:87"><span>87</span></div>
+                <div class="ring-label">Excellent data quality</div>
+              </div>
+              <div class="visual-card visual-card-c">
+                <div class="mini-bars">
+                  <span style="height:40%"></span><span style="height:65%"></span><span style="height:50%"></span>
+                  <span style="height:80%"></span><span style="height:60%"></span><span style="height:95%"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload dropzone -->
+      <div class="container">
+        <div class="upload-panel" id="upload-panel">
+          <input type="file" id="file-input" class="visually-hidden" accept=".csv,.tsv,.txt" multiple />
+          <label class="dropzone" id="dropzone" for="file-input">
+            <div class="dz-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+            <h3>Drop your CSV here, or <span class="link-like">browse files</span></h3>
+            <p>Accepts <strong>.csv</strong>, <strong>.tsv</strong> &amp; <strong>.txt</strong> files up to 25&nbsp;MB. Data is analyzed locally by your server.</p>
+            <div class="dz-progress" id="upload-progress" hidden>
+              <div class="progress"><div class="progress-bar" id="upload-progress-bar" style="width:0%"></div></div>
+              <small id="upload-status-text">Uploading…</small>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Feature cards -->
+      <div class="container section-block" id="features">
+        <h2 class="section-title text-center">Everything you need to understand your data</h2>
+        <p class="section-subtitle text-center">A complete, privacy-first analytics workspace for any CSV.</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#4f46e5"><i class="bi bi-cpu"></i></div>
+            <h4>Smart CSV Analysis</h4>
+            <p>Automatic type detection, statistics, and KPI extraction for any dataset shape.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#0ea5e9"><i class="bi bi-bar-chart"></i></div>
+            <h4>Interactive Visualizations</h4>
+            <p>Dynamic charts — bar, line, histogram, doughnut, scatter — chosen for your data.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#8b5cf6"><i class="bi bi-stars"></i></div>
+            <h4>AI-Powered Insights</h4>
+            <p>Executive summaries, trends and recommendations from your own OpenAI API key.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#10b981"><i class="bi bi-shield-check"></i></div>
+            <h4>Data Quality Analysis</h4>
+            <p>A health score, missing values, duplicates, and outliers — all flagged automatically.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#f59e0b"><i class="bi bi-chat-dots"></i></div>
+            <h4>AI Data Chat</h4>
+            <p>Ask questions in plain English and get answers grounded in your dataset.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="--c:#ef4444"><i class="bi bi-file-earmark-arrow-down"></i></div>
+            <h4>Automated Reports</h4>
+            <p>Export polished PDF reports or spreadsheet-ready CSV summaries with one click.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="container section-block" id="how-it-works">
+        <h2 class="section-title text-center">How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">1</span>
+            <div><h4>Upload</h4><p>Drop a CSV file. No sign-up required.</p></div>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <div><h4>Analyze</h4><p>Statistics, quality scores and charts are computed instantly.</p></div>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <div><h4>Connect AI</h4><p>Add your OpenAI API key to unlock AI insights &amp; chat.</p></div>
+          </div>
+          <div class="step">
+            <span class="step-num">4</span>
+            <div><h4>Decide</h4><p>Explore, ask questions, and export reports.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="container">
+          <p><i class="bi bi-graph-up-arrow me-1"></i> AI CSV Analyzer — data insights, visualizations, and AI analysis. Built with FastAPI, Pandas, and Chart.js.</p>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- DASHBOARD VIEW -->
+    <!-- ============================================================ -->
+    <section id="view-dashboard" class="view">
+      <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav" aria-label="Dashboard sections">
+          <a class="nav-item active" data-section="overview" href="#dashboard/overview"><i class="bi bi-grid-1x2"></i><span>Overview</span></a>
+          <a class="nav-item" data-section="preview" href="#dashboard/preview"><i class="bi bi-table"></i><span>Data Preview</span></a>
+          <a class="nav-item" data-section="quality" href="#dashboard/quality"><i class="bi bi-shield-check"></i><span>Data Quality</span></a>
+          <a class="nav-item" data-section="statistics" href="#dashboard/statistics"><i class="bi bi-calculator"></i><span>Statistics</span></a>
+          <a class="nav-item" data-section="visualizations" href="#dashboard/visualizations"><i class="bi bi-bar-chart"></i><span>Visualizations</span></a>
+          <a class="nav-item" data-section="ai-insights" href="#dashboard/ai-insights"><i class="bi bi-stars"></i><span>AI Insights</span></a>
+          <a class="nav-item" data-section="chat" href="#dashboard/chat"><i class="bi bi-chat-dots"></i><span>AI Chat</span></a>
+          <a class="nav-item" data-section="reports" href="#dashboard/reports"><i class="bi bi-file-earmark-arrow-down"></i><span>Reports</span></a>
+        </nav>
+        <div class="sidebar-foot">
+          <button class="btn btn-sm btn-outline-secondary w-100" id="sidebar-new-upload">
+            <i class="bi bi-upload me-1"></i>Upload new CSV
+          </button>
+        </div>
+      </aside>
+
+      <div class="dash-main" id="dash-main">
+        <div class="dash-content">
+
+          <!-- OVERVIEW -->
+          <section class="dash-section active" id="section-overview">
+            <div class="dash-header">
+              <div>
+                <h1>Overview</h1>
+                <p id="overview-subtitle">Loading dataset…</p>
+              </div>
+              <div class="dash-actions">
+                <button class="btn btn-primary" id="overview-report-btn">
+                  <i class="bi bi-file-earmark-arrow-down me-1"></i>Generate Report
+                </button>
+              </div>
+            </div>
+            <div class="kpi-grid" id="kpi-grid">
+              <div class="skeleton skeleton-kpi"></div><div class="skeleton skeleton-kpi"></div>
+              <div class="skeleton skeleton-kpi"></div><div class="skeleton skeleton-kpi"></div>
+            </div>
+            <div class="row g-4 mt-1">
+              <div class="col-xl-7">
+                <div class="card"><div class="card-header">Column types</div>
+                  <div class="card-body" id="overview-column-types"><div class="skeleton" style="height:120px"></div></div>
+                </div>
+              </div>
+              <div class="col-xl-5">
+                <div class="card"><div class="card-header">Dataset information</div>
+                  <div class="card-body" id="overview-dataset-info"><div class="skeleton" style="height:120px"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-4 mt-1">
+              <div class="col-xl-7">
+                <div class="card"><div class="card-header">Semantic fields detected</div>
+                  <div class="card-body" id="overview-semantics"><div class="skeleton" style="height:120px"></div></div>
+                </div>
+              </div>
+              <div class="col-xl-5">
+                <div class="card"><div class="card-header">Top correlations</div>
+                  <div class="card-body" id="overview-correlations"><div class="skeleton" style="height:120px"></div></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- PREVIEW -->
+          <section class="dash-section" id="section-preview">
+            <div class="dash-header">
+              <div>
+                <h1>Data Preview</h1>
+                <p>First rows of your dataset with detected types.</p>
+              </div>
+              <div class="dash-actions" id="preview-meta"></div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive sticky-wrap" id="preview-table-wrap">
+                  <div class="skeleton" style="height:220px"></div>
+                </div>
+                <div class="pagination-bar" id="preview-pagination"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- QUALITY -->
+          <section class="dash-section" id="section-quality">
+            <div class="dash-header">
+              <div>
+                <h1>Data Quality</h1>
+                <p>Completeness, duplicates, consistency and uniqueness.</p>
+              </div>
+            </div>
+            <div class="row g-4">
+              <div class="col-lg-4">
+                <div class="card h-100"><div class="card-header">Overall health score</div>
+                  <div class="card-body health-body">
+                    <div class="big-ring" id="quality-ring"><div class="ring" style="--p:0"><span>—</span></div></div>
+                    <div id="quality-ring-label"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="card h-100"><div class="card-header">Quality components</div>
+                  <div class="card-body" id="quality-components"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-4"><div class="card-header">Warnings &amp; observations</div>
+              <div class="card-body" id="quality-warnings"></div>
+            </div>
+          </section>
+
+          <!-- STATISTICS -->
+          <section class="dash-section" id="section-statistics">
+            <div class="dash-header">
+              <div>
+                <h1>Statistics</h1>
+                <p>Automatically computed summary statistics.</p>
+              </div>
+            </div>
+            <div id="statistics-body"></div>
+          </section>
+
+          <!-- VISUALIZATIONS -->
+          <section class="dash-section" id="section-visualizations">
+            <div class="dash-header">
+              <div>
+                <h1>Visualizations</h1>
+                <p>Charts built from your real data.</p>
+              </div>
+            </div>
+            <div id="viz-auto"></div>
+            <div class="card mt-4"><div class="card-header">Custom chart builder</div>
+              <div class="card-body">
+                <div class="row g-3 align-items-end">
+                  <div class="col-md-3 col-sm-6">
+                    <label for="chart-x" class="form-label">X axis</label>
+                    <select class="form-select" id="chart-x"></select>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label for="chart-y" class="form-label">Y axis / value</label>
+                    <select class="form-select" id="chart-y"></select>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label for="chart-type" class="form-label">Chart type</label>
+                    <select class="form-select" id="chart-type">
+                      <option value="bar">Bar</option>
+                      <option value="line">Line</option>
+                      <option value="area">Area</option>
+                      <option value="doughnut">Doughnut</option>
+                      <option value="histogram">Histogram</option>
+                      <option value="scatter">Scatter</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label for="chart-aggregate" class="form-label">Aggregate</label>
+                    <select class="form-select" id="chart-aggregate">
+                      <option value="sum">Sum</option><option value="mean">Average</option>
+                      <option value="median">Median</option><option value="count">Count</option>
+                      <option value="min">Min</option><option value="max">Max</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                  <button class="btn btn-primary" id="chart-build-btn"><i class="bi bi-bar-chart me-1"></i>Build chart</button>
+                  <button class="btn btn-outline-secondary" id="chart-reset-btn">Reset</button>
+                </div>
+                <div class="mt-3" id="chart-custom-wrap" hidden>
+                  <canvas id="chart-custom" height="120"></canvas>
+                  <small class="text-muted" id="chart-custom-note"></small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- AI INSIGHTS -->
+          <section class="dash-section" id="section-ai-insights">
+            <div class="dash-header">
+              <div>
+                <h1>AI Insights</h1>
+                <p>Rule-based findings, plus deep AI analysis from OpenAI.</p>
+              </div>
+            </div>
+            <div class="ai-gate card" id="ai-insights-gate" hidden>
+              <div class="card-body text-center py-5">
+                <i class="bi bi-stars display-5"></i>
+                <h3 class="mt-3">AI features are unavailable until an OpenAI API key is configured.</h3>
+                <p class="text-muted">Connect your OpenAI API key to unlock AI insights and chat.</p>
+                <button class="btn btn-primary" id="ai-gate-connect"><i class="bi bi-stars me-1"></i>Connect AI</button>
+              </div>
+            </div>
+            <div id="ai-insights-content">
+              <div class="card mb-4"><div class="card-header"><i class="bi bi-lightbulb me-1"></i> Rule-based insights</div>
+                <div class="card-body" id="rule-insights-list"></div>
+              </div>
+              <div class="card" id="ai-analysis-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-stars me-1"></i> AI-generated analysis</span>
+                  <button class="btn btn-sm btn-primary" id="ai-generate-btn">
+                    <i class="bi bi-magic me-1"></i>Generate AI Analysis
+                  </button>
+                </div>
+                <div class="card-body" id="ai-analysis-body">
+                  <div class="empty-state"><i class="bi bi-stars"></i><p>Generate an AI analysis of this dataset to see an executive summary, key findings, trends, and recommended actions.</p></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CHAT -->
+          <section class="dash-section" id="section-chat">
+            <div class="dash-header">
+              <div>
+                <h1>AI Data Analyst Chat</h1>
+                <p>Ask questions about your dataset in plain English.</p>
+              </div>
+            </div>
+            <div class="ai-gate card" id="chat-gate" hidden>
+              <div class="card-body text-center py-5">
+                <i class="bi bi-chat-dots display-5"></i>
+                <h3 class="mt-3">AI features are unavailable until an OpenAI API key is configured.</h3>
+                <p class="text-muted">Connect your OpenAI API key to start chatting with your data.</p>
+                <button class="btn btn-primary" id="chat-gate-connect"><i class="bi bi-stars me-1"></i>Connect AI</button>
+              </div>
+            </div>
+            <div class="chat-layout card" id="chat-layout">
+              <div class="chat-side">
+                <div class="chat-side-head">Suggestions</div>
+                <div id="chat-suggestions"></div>
+              </div>
+              <div class="chat-main">
+                <div class="chat-messages" id="chat-messages" aria-live="polite">
+                  <div class="empty-state"><i class="bi bi-chat-square-text"></i><p>Start a conversation with your data analyst. Try one of the suggestions on the left, or ask your own question.</p></div>
+                </div>
+                <form class="chat-input" id="chat-form">
+                  <label for="chat-message-input" class="visually-hidden">Your question</label>
+                  <textarea id="chat-message-input" rows="1" placeholder="Ask anything about your dataset…" maxlength="4000"></textarea>
+                  <button type="submit" class="btn btn-primary" id="chat-send-btn" aria-label="Send message"><i class="bi bi-send"></i></button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <!-- REPORTS -->
+          <section class="dash-section" id="section-reports">
+            <div class="dash-header">
+              <div>
+                <h1>Reports</h1>
+                <p id="reports-subtitle">Export a full analysis report in your preferred format.</p>
+              </div>
+            </div>
+
+            <!-- Primary generate flow -->
+            <div class="card report-generate-card mb-4" id="report-generate-card">
+              <div class="card-header"><i class="bi bi-file-earmark-arrow-down me-1"></i> Report</div>
+              <div class="card-body">
+                <div class="report-status" id="report-status" role="status" aria-live="polite"></div>
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                  <button class="btn btn-primary btn-lg" id="generate-report" disabled>
+                    <i class="bi bi-file-earmark-arrow-down me-1"></i>Generate Report
+                  </button>
+                  <button class="btn btn-success btn-lg" id="download-report" hidden>
+                    <i class="bi bi-download me-1"></i>Download Report
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick export formats -->
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="card report-card" data-format="pdf">
+                  <div class="report-icon" style="--c:#ef4444"><i class="bi bi-file-earmark-pdf"></i></div>
+                  <h4>PDF Report</h4>
+                  <p>A polished document with overview, statistics, data quality, and insights.</p>
+                  <button class="btn btn-outline-primary report-download" data-format="pdf"><i class="bi bi-download me-1"></i>Download PDF</button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card report-card" data-format="csv">
+                  <div class="report-icon" style="--c:#10b981"><i class="bi bi-filetype-csv"></i></div>
+                  <h4>CSV Summary</h4>
+                  <p>Per-column statistics as a spreadsheet-ready table.</p>
+                  <button class="btn btn-outline-primary report-download" data-format="csv"><i class="bi bi-download me-1"></i>Download CSV</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Report history -->
+            <div class="card mt-4"><div class="card-header"><i class="bi bi-clock-history me-1"></i> Recent reports</div>
+              <div class="card-body" id="report-history"><div class="empty-state"><i class="bi bi-file-earmark-text"></i><p>No reports generated yet.</p></div></div>
+            </div>
+
+            <div class="card mt-4"><div class="card-header">Report preview</div>
+              <div class="card-body" id="report-preview"><div class="empty-state"><i class="bi bi-file-earmark-text"></i><p>Generate a report to see its contents here.</p></div></div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODALS -->
+  <!-- ============================================================ -->
+  <div class="modal fade" id="dataset-modal" tabindex="-1" aria-hidden="true" aria-labelledby="dataset-modal-title">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="dataset-modal-title">Datasets</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="dataset-modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="dataset-modal-upload"><i class="bi bi-upload me-1"></i>Upload CSV</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm-modal" tabindex="-1" aria-hidden="true" aria-labelledby="confirm-modal-title">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirm-modal-title">Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="confirm-modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirm-modal-ok">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API key onboarding modal -->
+  <div class="modal fade" id="apikey-modal" tabindex="-1" aria-hidden="true" aria-labelledby="apikey-modal-title">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="apikey-modal-title"><i class="bi bi-stars me-1"></i> Connect AI</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>To use AI-powered analysis, enter your <strong>OpenAI API key</strong>.</p>
+          <div class="input-group mb-2">
+            <input type="password" class="form-control" id="modal-ai-key" placeholder="sk-proj-…" autocomplete="off" />
+            <button class="btn btn-outline-secondary" id="modal-ai-toggle" type="button" aria-label="Show or hide key"><i class="bi bi-eye"></i></button>
+          </div>
+          <div id="modal-ai-status" class="small mb-3"></div>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-outline-primary" id="modal-ai-test"><i class="bi bi-plug me-1"></i>Test connection</button>
+            <button class="btn btn-primary" id="modal-ai-save"><i class="bi bi-check-lg me-1"></i>Save for this session</button>
+          </div>
+          <p class="small text-muted mb-2">
+            Your API key is used only for AI requests during this session and is not stored permanently.
+          </p>
+          <details>
+            <summary><strong>How to get an OpenAI API key?</strong></summary>
+            <ol class="small mt-2 ps-3">
+              <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">platform.openai.com/api-keys</a>.</li>
+              <li>Sign in and create an API key.</li>
+              <li>Click <strong>Create API Key</strong>, copy it, and paste it above.</li>
+            </ol>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="app-access-modal" tabindex="-1" aria-hidden="true" aria-labelledby="app-access-title">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="app-access-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="app-access-title">Workspace access</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="app-access-token" class="form-label">Access token</label>
+            <input type="password" class="form-control" id="app-access-token" autocomplete="current-password" required />
+            <div id="app-access-status" class="small text-danger mt-2" role="alert"></div>
+            <p class="small text-muted mt-3 mb-0">The token is kept only for this browser tab.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <div class="loading-overlay" id="loading-overlay" hidden>
+    <div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading…</span></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCRIPTS -->
+  <!-- ============================================================ -->
+  <script src="/static/assets/vendor/bootstrap.bundle.min.js"></script>
+  <script src="/static/assets/vendor/chart.umd.js"></script>
+  <script src="/static/js/api.js?v=20261026"></script>
+  <script src="/static/js/settings.js?v=20261026"></script>
+  <script src="/static/js/app.js?v=20261026"></script>
+  <script src="/static/js/upload.js?v=20261026"></script>
+  <script src="/static/js/dashboard.js?v=20261026"></script>
+  <script src="/static/js/charts.js?v=20261026"></script>
+  <script src="/static/js/insights.js?v=20261026"></script>
+  <script src="/static/js/chat.js?v=20261026"></script>
+  <script src="/static/js/reports.js?v=20261026"></script>
+</body>
+</html>
